@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition template="/WEB-INF/template/layout.xhtml">
+        <ui:define name="content">
+            <h1>Welcome to the BBB InsecureApp <h:graphicImage width="20" url="/secured/secure.png" alt="secure"/></h1>
+            <h2>News</h2>
+
+            <h:panelGroup id="messages" rendered="#{not empty facesContext.messageList}" layout="block" class="alert alert-info" a:role="alert"> 
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Message:</span>
+                <h:messages />
+            </h:panelGroup>
+
+            <ui:repeat value="#{newsController.news}" var="newsitem">                    
+                <h:form>
+                    <div class="panel #{newsitem.isAdminNews ? 'panel-primary':'panel-default'}">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">#{newsitem.header} (#{newsitem.posted} by #{newsitem.author})
+                                <h:panelGroup id="myId" rendered="#{loginController.user.username eq 'administrator' || newsitem.author eq loginController.user.username}" styleClass="groupBox">
+                                    / <h:commandButton  class="btn btn-success btn-xs" value="edit" action="#{newsController.prepareEdit(newsitem)}"/> 
+                                    <a href="news/delete.xhtml;jsessionid=#{session.id}?id=#{newsitem.id}" class="btn btn-danger btn-xs">delete</a>
+                                </h:panelGroup></h3>
+                        </div>
+                        <div class="panel-body">
+                            <h:outputText value="#{newsitem.detail}" />/*to make vunarable write escaping="false"*/
+                        </div>                                 
+                    </div>
+                </h:form>
+            </ui:repeat>
+        </ui:define>
+    </ui:composition>
+
+</html>

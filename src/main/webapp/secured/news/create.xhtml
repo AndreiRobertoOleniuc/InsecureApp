@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">   
+    <ui:composition template="/WEB-INF/template/layout.xhtml">
+        <ui:define name="title">Create News</ui:define>
+
+        <ui:define name="content">
+            <h1>Create News</h1>
+            
+            <h:form class="form-horizontal">
+                <div class="form-group">
+                    <h:outputLabel for="header" class="col-sm-2 control-label">Header</h:outputLabel>
+                    <div class="col-sm-10">
+                        <h:inputText class="form-control" id="header" value="#{newsController.current.header}" a:required="required" a:placeholder="Header"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel for="detail" class="col-sm-2 control-label">Detail</h:outputLabel>
+                    <div class="col-sm-10">
+                        <h:inputTextarea class="form-control" id="detail" value="#{newsController.current.detail}" a:required="required" a:placeholder="Detail"/>
+                    </div>
+                </div>               
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <input type="hidden" value="#{loginController.user.username}" name="author"/>
+                        <input type="hidden" value="#{loginController.user.isAdmin}" name="isAdminNews"/>
+                        <input type="hidden" value="#{newsController.date}" name="posted"/>
+                        <h:commandButton class="btn btn-default" value="Create" action="#{newsController.create()}"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

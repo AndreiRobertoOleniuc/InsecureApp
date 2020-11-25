@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <h:link class="navbar-brand" value="Insecure App" outcome="/index"/>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <h:form class="navbar-form">
+                        <ul class="nav navbar-nav navbar-right">                        
+                            <li><h:link value="#{loginController.user.username}" outcome="/secured/profile">
+                                    <f:param name="redirectionUrl" value="#{request.requestURL};jsessionid=#{session.id}"/>
+                                </h:link>
+                            </li>
+                            <h:panelGroup rendered="#{loginController.user.isAdmin}">
+                                <li><p class="navbar-text"><h:outputText value="(Admin)"/></p></li>
+                            </h:panelGroup>
+                        </ul>
+                    </h:form>
+                    <h:form  class="navbar-form navbar-right">
+                        <h:commandButton action="#{searchController.search()}" style="display: none"/>
+                        <h:inputText id="searchString" value="#{searchController.searchString}" class="form-control" a:required="required" a:placeholder="Search..."/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>

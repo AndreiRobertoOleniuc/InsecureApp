@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/WEB-INF/template/layout.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="redirectionUrl" value="#{profileController.redirectionUrl}"/>
+            </f:metadata>
+            <h1>Profile</h1>
+            <table class="table">
+                <tr><td>ID:</td><td>#{loginController.user.id}</td></tr>
+                <tr><td>Username:</td><td>#{loginController.user.username}</td></tr>
+                <tr><td>Is Admin?</td><td>#{loginController.user.isAdmin?"Yes":"no"}</td></tr>
+            </table>
+            <h:form>
+            <h:commandButton action="#{profileController.back()}" value="&lt; Back" class="btn btn-default"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

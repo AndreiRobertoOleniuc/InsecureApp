@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+    <user id="1">
+        <username>administrator</username>
+        <password>8dminSec</password>
+        <isadmin>1</isadmin>
+    </user>
+    <user id="2">
+        <username>user</username>
+        <password>uS3rP8ss</password>
+        <isadmin>0</isadmin>
+    </user>
+</users>
