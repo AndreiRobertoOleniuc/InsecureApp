@@ -3,6 +3,7 @@ package ch.bbbaden.insecureapp.controller;
 import ch.bbbaden.insecureapp.model.News;
 import ch.bbbaden.insecureapp.model.NewsDAO;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -31,7 +32,7 @@ public class NewsController implements Serializable {
         return current;
     }
 
-    public List<News> getNews() {
+    public List<News> getNews() throws SQLException {
         return new NewsDAO().getAll();
     }
 
@@ -44,7 +45,7 @@ public class NewsController implements Serializable {
         return "/secured/news/create";
     }
 
-    public String create() {
+    public String create() throws SQLException {
         // Get Hidden Fields
         current.setAuthor(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("author"));
         current.setIsAdminNews("true".equals(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("isAdminNews")));
@@ -62,7 +63,7 @@ public class NewsController implements Serializable {
         return "/secured/news/edit?faces-redirect=true";
     }
 
-    public String edit() {
+    public String edit() throws SQLException {
         // Get Hidden Fields
         current.setAuthor(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("author"));
         current.setIsAdminNews("true".equals(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("isAdminNews")));
@@ -83,7 +84,7 @@ public class NewsController implements Serializable {
         this.deleteid = deleteid;
     }
 
-    public void delete() {
+    public void delete() throws SQLException {
         NewsDAO newsDAO = new NewsDAO();
         News news = newsDAO.getById(deleteid);
         newsDAO.delete(news);
@@ -94,7 +95,7 @@ public class NewsController implements Serializable {
         facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, outcome);
     }
 
-    public String delete(News news) {
+    public String delete(News news) throws SQLException {
         new NewsDAO().delete(news);
         current = null;
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);

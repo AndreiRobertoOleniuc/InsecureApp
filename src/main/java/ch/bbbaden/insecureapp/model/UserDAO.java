@@ -69,14 +69,14 @@ public class UserDAO {
                     final int entryId = Integer.parseInt(userElement.getAttribute("id"));
                     if (entryId == user.getId()) {
                         // Because passwords can contain special chars
-                        Node disableEscapingLt = doc.createProcessingInstruction(StreamResult.PI_DISABLE_OUTPUT_ESCAPING, "<");
-                        Node disableEscapingGt = doc.createProcessingInstruction(StreamResult.PI_DISABLE_OUTPUT_ESCAPING, ">");
-                        
+                        Node disableEscapingLt = doc.createProcessingInstruction(StreamResult.PI_ENABLE_OUTPUT_ESCAPING, "<");
+                        Node disableEscapingGt = doc.createProcessingInstruction(StreamResult.PI_ENABLE_OUTPUT_ESCAPING, ">");
+
                         final Node password = userElement.getElementsByTagName("password").item(0);
                         password.setTextContent(newPassword);
                         password.getParentNode().insertBefore(disableEscapingGt, password);
                         password.getParentNode().insertBefore(disableEscapingLt, password);
-                        
+
                         break;
                     }
                 }

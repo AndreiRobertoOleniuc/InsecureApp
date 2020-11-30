@@ -1,5 +1,6 @@
 package ch.bbbaden.insecureapp.model;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,13 +16,13 @@ import java.util.logging.Logger;
  */
 public class NewsDAO {
 
-    public NewsDAO() {
+    public NewsDAO() throws SQLException {
         if (!DbAccess.tableExists("news")) {
             createInitialNews();
         }
     }
 
-    private void createInitialNews() {
+    private void createInitialNews() throws SQLException {
         final String sql = "CREATE TABLE IF NOT EXISTS news ("
                 + " id INTEGER PRIMARY KEY,"
                 + " posted DATETIME DEFAULT CURRENT_TIMESTAMP,"
@@ -64,40 +65,41 @@ public class NewsDAO {
         return allNews;
     }
 
-    public int insert(News news) {
-        final String sql = "INSERT INTO news (posted, header, detail, author, is_admin_news) "
-                + "VALUES ('"
-                + new java.sql.Timestamp(news.getPosted().getTime()) + "','"
-                + news.getHeader() + "','"
-                + news.getDetail() + "','"
-                + news.getAuthor() + "',"
-                + (news.getIsAdminNews() ? "1" : "0") + ")";
+    public int insert(News news) throws SQLException {
         int id = 0;
-
-        try (Statement stmt = DbAccess.getConnection().createStatement()) {
-            stmt.execute(sql);
-            id = stmt.getGeneratedKeys().getInt(1);
-        } catch (SQLException e) {
-            Logger.getLogger(NewsDAO.class.getName()).log(Level.SEVERE, null, e);
-        }
+        String query = "INSERT INTO news (posted, header, detail, author, is_admin_news) VALUES (?,?,?,?,?)";
+        PreparedStatement ps = DbAccess.getConnection().prepareStatement(query);
+        ps.setTimestamp(1, new java.sql.Timestamp(news.getPosted().getTime()));
+        ps.setString(2, news.getHeader());
+        ps.setString(3, news.getDetail());
+        ps.setString(4, news.getAuthor());
+        ps.setInt(5, Integer.parseInt(news.getIsAdminNews() ? "1" : "0"));
+        ps.execute();
+        ps.close();
 
         return id;
 
     }
 
     public void edit(News news) {
-        final String sql = "UPDATE news SET "
-                + "posted='" + new java.sql.Timestamp(news.getPosted().getTime()) + "',"
-                + "header='" + news.getHeader() + "',"
-                + "detail='" + news.getDetail() + "',"
-                + "author='" + news.getAuthor() + "',"
-                + "is_admin_news=" + (news.getIsAdminNews() ? "1" : "0")
-                + " WHERE id = " + news.getId();
+        String sql2 = "UPDATE news SET posted=?, "
+                + "header=?,"
+                + "detail=?,"
+                + "author=?,"
+                + "is_admin_news=? "
+                + "WHERE id = ?";
 
-        try (Statement stmt = DbAccess.getConnection().createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            Logger.getLogger(NewsDAO.class.getName()).log(Level.SEVERE, null, e);
+        try (PreparedStatement ps = DbAccess.getConnection().prepareStatement(sql2)) {
+            ps.setTimestamp(1, new java.sql.Timestamp(news.getPosted().getTime()));
+            ps.setString(2, news.getHeader());
+            ps.setString(3, news.getDetail());
+            ps.setString(4, news.getAuthor());
+            ps.setInt(5, Integer.parseInt(news.getIsAdminNews() ? "1" : "0"));
+            ps.setInt(6, news.getId());
+            ps.execute();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NewsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
