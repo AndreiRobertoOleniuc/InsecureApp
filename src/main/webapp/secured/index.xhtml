@@ -23,7 +23,7 @@
                             <h3 class="panel-title">#{newsitem.header} (#{newsitem.posted} by #{newsitem.author})
                                 <h:panelGroup id="myId" rendered="#{loginController.user.username eq 'administrator' || newsitem.author eq loginController.user.username}" styleClass="groupBox">
                                     / <h:commandButton  class="btn btn-success btn-xs" value="edit" action="#{newsController.prepareEdit(newsitem)}"/> 
-                                    <a href="news/delete.xhtml;jsessionid=#{session.id}?id=#{newsitem.id}" class="btn btn-danger btn-xs">delete</a>
+                                    <h:commandButton class="btn btn-danger btn-xs" value="delete" action="#{newsController.delete(newsitem)}"/>
                                 </h:panelGroup></h3>
                         </div>
                         <div class="panel-body">

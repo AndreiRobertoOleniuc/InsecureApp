@@ -76,25 +76,6 @@ public class NewsController implements Serializable {
         return "/secured/index?faces-redirect=true";
     }
 
-    public int getDeleteid() {
-        return deleteid;
-    }
-
-    public void setDeleteid(int deleteid) {
-        this.deleteid = deleteid;
-    }
-
-    public void delete() throws SQLException {
-        NewsDAO newsDAO = new NewsDAO();
-        News news = newsDAO.getById(deleteid);
-        newsDAO.delete(news);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "News deleted!", null));
-
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        String outcome = "/secured/index"; // Do your thing?
-        facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, outcome);
-    }
-
     public String delete(News news) throws SQLException {
         new NewsDAO().delete(news);
         current = null;
