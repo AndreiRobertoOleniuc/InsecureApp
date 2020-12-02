@@ -30,7 +30,7 @@
                     </h:form>
                     <h:form  class="navbar-form navbar-right">
                         <h:commandButton action="#{searchController.search()}" style="display: none"/>
-                        <h:inputText id="searchString" value="#{searchController.searchString}" class="form-control" a:required="required" a:placeholder="Search..."/>
+                        <h:inputText id="searchString" value="#{searchController.searchString}" class="form-control" a:required="required" a:minLenght="2" a:placeholder="Search..."/>
                     </h:form>
                 </div>
             </div>

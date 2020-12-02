@@ -7,6 +7,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,8 +18,12 @@ import javax.inject.Named;
 @SessionScoped
 public class LoginController implements Serializable {
 
+    @Size(min = 2, message = "Your Username to Short")
+    @Pattern(regexp = "[a-zA-Z0-9]+", message = "Bitte gebe richtige Zeichen ein")
     private String username;
+    @Size(min = 8, message = "Your Username to Short")
     private String password;
+    @Size(min = 8, message = "Your Username to Short")
     private String newPassword;
 
     private User user;
@@ -25,7 +31,6 @@ public class LoginController implements Serializable {
     public String doLogin() {
         UserDAO udao = new UserDAO();
         this.user = udao.check(username, password);
-
         if (this.user != null) {
             return "/secured/index?faces-redirect=true";
         }

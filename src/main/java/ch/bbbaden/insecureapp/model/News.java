@@ -1,6 +1,8 @@
 package ch.bbbaden.insecureapp.model;
 
 import java.util.Date;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -9,9 +11,13 @@ import java.util.Date;
 public class News {
 
     private int id;
+    @Past
     private Date posted;
+    @Size(min = 1, message = "To short shorty")
     private String header;
+    @Size(min = 1, message = "To short shorty")
     private String detail;
+    @Size(min = 1, message = "To short shorty")
     private String author;
     private boolean isAdminNews;
 

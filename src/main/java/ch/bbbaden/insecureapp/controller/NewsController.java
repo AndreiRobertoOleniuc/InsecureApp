@@ -93,10 +93,13 @@ public class NewsController implements Serializable {
 
     public String delete(News news) throws SQLException {
         new NewsDAO().delete(news);
-        current = null;
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "News deleted!", null));
+        if (loginController.getUser().getUsername().equals(current.getAuthor())) {
+            current = null;
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "News deleted!", null));
 
+            return "/secured/index?faces-redirect=true";
+        }
         return "/secured/index?faces-redirect=true";
     }
 

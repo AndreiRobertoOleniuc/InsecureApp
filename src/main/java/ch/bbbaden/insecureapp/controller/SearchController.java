@@ -8,6 +8,8 @@ package ch.bbbaden.insecureapp.controller;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,10 +18,13 @@ import javax.enterprise.context.RequestScoped;
 @Named(value = "searchController")
 @RequestScoped
 public class SearchController implements Serializable {
+
+    @Size(min = 2, message = "Eingabe zu klein")
+    @Pattern(regexp = "[a-zA-Z0-9]+", message = "Bitte gebe richtige Zeichen ein")
     private String searchString;
-    
+
     public String search() {
-      return "searchResult";  
+        return "searchResult";
     }
 
     public String getSearchString() {
@@ -29,6 +34,5 @@ public class SearchController implements Serializable {
     public void setSearchString(String searchString) {
         this.searchString = searchString;
     }
-    
-    
+
 }

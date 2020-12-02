@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
- 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
     <ui:composition>
         <div class="container-fluid">
             <div class="row">
@@ -8,7 +9,23 @@
                     <ui:include src="leftMenu.xhtml" />
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">                    
-                    <ui:insert name="content" />                    
+                    <ui:insert name="content" />    
+                    <ui:repeat value="#{newsController.news}" var="newsitem">                    
+                        <h:form>
+                            <div class="panel #{newsitem.isAdminNews ? 'panel-primary':'panel-default'}">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">#{newsitem.header} (#{newsitem.posted} by #{newsitem.author})
+                                        <h:panelGroup id="myId" rendered="#{loginController.user.username eq 'administrator' || newsitem.author eq loginController.user.username}" styleClass="groupBox">
+                                            / <h:commandButton  class="btn btn-success btn-xs" value="edit" action="#{newsController.prepareEdit(newsitem)}"/> 
+                                            <h:commandButton class="btn btn-danger btn-xs" value="delete" action="#{newsController.delete(newsitem)}"/>
+                                        </h:panelGroup></h3>
+                                </div>
+                                <div class="panel-body">
+                                    <h:outputText value="#{newsitem.detail}"/><!--to make website vunarable write espace="false"-->
+                                </div>                                 
+                            </div>
+                        </h:form>
+                    </ui:repeat>
                 </div>
             </div>
         </div>
