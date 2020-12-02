@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
+        <param-value>Production</param-value>
     </context-param>
     <filter>
         <filter-name>SecureFilter</filter-name>
@@ -13,7 +13,7 @@
     </filter>
     <filter-mapping>
         <filter-name>SecureFilter</filter-name>
-        <url-pattern>/faces/secured/*</url-pattern>
+        <url-pattern>/secured/*</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -22,9 +22,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <session-config>
         <tracking-mode>URL</tracking-mode>
     </session-config>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/error/404.xhtml</location>
+    </error-page>
+    <error-page>
+        <location>/WEB-INF/error/error.xhtml</location>
+    </error-page>
 </web-app>
