@@ -24,9 +24,6 @@
                 </div>               
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <input type="hidden" value="#{loginController.user.username}" name="author"/>
-                        <input type="hidden" value="#{loginController.user.isAdmin}" name="isAdminNews"/>
-                        <input type="hidden" value="#{newsController.date}" name="posted"/>
                         <h:commandButton class="btn btn-default" value="Create" action="#{newsController.create()}"/>
                     </div>
                 </div>

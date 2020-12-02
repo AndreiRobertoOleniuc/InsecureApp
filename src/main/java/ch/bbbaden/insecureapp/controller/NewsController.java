@@ -4,11 +4,15 @@ import ch.bbbaden.insecureapp.model.News;
 import ch.bbbaden.insecureapp.model.NewsDAO;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -18,6 +22,9 @@ import javax.inject.Named;
 @Named(value = "newsController")
 @SessionScoped
 public class NewsController implements Serializable {
+
+    @Inject
+    private LoginController loginController;
 
     private News current;
     private int deleteid;
@@ -46,10 +53,14 @@ public class NewsController implements Serializable {
     }
 
     public String create() throws SQLException {
-        // Get Hidden Fields
-        current.setAuthor(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("author"));
-        current.setIsAdminNews("true".equals(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("isAdminNews")));
-        current.setPosted(new Date(Long.parseLong(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("posted"))));
+        if (loginController.getUser().isIsAdmin()) {
+            current.setIsAdminNews(true);
+        } else {
+            current.setIsAdminNews(false);
+        }
+        Date date = new Date();
+        current.setAuthor(loginController.getUser().getUsername());
+        current.setPosted(date);
 
         new NewsDAO().insert(current);
         current = null;
@@ -64,10 +75,14 @@ public class NewsController implements Serializable {
     }
 
     public String edit() throws SQLException {
-        // Get Hidden Fields
-        current.setAuthor(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("author"));
-        current.setIsAdminNews("true".equals(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("isAdminNews")));
-        current.setPosted(new Date(Long.parseLong(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("posted"))));
+        if (loginController.getUser().isIsAdmin()) {
+            current.setIsAdminNews(true);
+        } else {
+            current.setIsAdminNews(false);
+        }
+        Date date = new Date();
+        current.setAuthor(loginController.getUser().getUsername());
+        current.setPosted(date);
 
         new NewsDAO().edit(current);
         current = null;
